@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react';
-import { HiPencil, HiChevronDown, HiMenuAlt3 } from 'react-icons/hi';
-import { MdDoorbell, MdCheck } from 'react-icons/md';
+import { HiChevronDown, HiMenuAlt3, HiUser, HiBell } from 'react-icons/hi';
+import { MdCheck, MdLogout } from 'react-icons/md';
 import { Menu, Transition, Popover } from '@headlessui/react';
 import Link from 'next/link';
 
 const Topbar = ({ showNav, setShowNav }) => {
   return (
     <div
-      className={`fixed w-full h-16 flex justify-between items-center transition-all duration-[300ms] ${
+      className={`fixed bg-gray-100 w-full h-16 flex justify-between items-center transition-all duration-[300ms] ${
         showNav ? 'pl-56' : ''
       }`}
     >
@@ -21,7 +21,7 @@ const Topbar = ({ showNav, setShowNav }) => {
       <div className="flex items-center pr-4 md:pr-16">
         <Popover className="relative">
           <Popover.Button className="outline-none mr-5 md:mr-8 cursor-pointer text-gray-700">
-            <MdDoorbell className="w-6 h-6" />
+            <HiBell className="w-6 h-6" />
           </Popover.Button>
           <Transition
             as={Fragment}
@@ -93,8 +93,17 @@ const Topbar = ({ showNav, setShowNav }) => {
                     href=""
                     className="flex hover:bg-orange-500 text-gray-700 hover:text-white rounded p-2 text-sm group transition-colors items-center"
                   >
-                    <HiPencil className="w-4 h-4 mr-2" />
-                    Edit
+                    <HiUser className="w-4 h-4 mr-2" />
+                    Profile
+                  </Link>
+                </Menu.Item>
+                <Menu.Item>
+                  <Link
+                    href=""
+                    className="flex hover:bg-orange-500 text-gray-700 hover:text-white rounded p-2 text-sm group transition-colors items-center"
+                  >
+                    <MdLogout className="w-4 h-4 mr-2" />
+                    Logout
                   </Link>
                 </Menu.Item>
               </div>

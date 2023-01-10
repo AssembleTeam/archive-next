@@ -9,7 +9,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <p className="text-gray-700 text-3xl mb-16 font-bold">Dashboard</p>
+      <h1 className="text-gray-700 text-3xl font-bold mb-8">Dashboard</h1>
 
       <div className="grid lg:grid-cols-3 gap-5 mb-16">
         <div className="rounded bg-white h-40 shadow-sm"></div>
