@@ -15,7 +15,7 @@ async function connect() {
     }
     await mongoose.disconnect();
   }
-  const db = await mongoose.connect(process.env.MONGO_URI);
+  const db = await mongoose.connect(process.env.NEXT_PUBLIC_MONGO_URI);
   console.log('connected');
   connection.isConnected = db.connections[0].readState;
 }
