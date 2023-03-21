@@ -1,26 +1,23 @@
 import '../styles/globals.css';
-import Layout from '../components/Layout';
-import { AnimateSharedLayout } from 'framer-motion';
 import { SessionProvider, useSession } from 'next-auth/react';
 import { StoreProvider } from '../context/Store';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+  const getLayout = Component.getLayout || ((page) => page);
+
   return (
-    <AnimateSharedLayout>
-      <SessionProvider session={session}>
-        <StoreProvider>
-          <Layout>
-            {Component.auth ? (
-              <Auth>
-                <Component {...pageProps} />
-              </Auth>
-            ) : (
-              <Component {...pageProps} />
-            )}
-          </Layout>
-        </StoreProvider>
-      </SessionProvider>
-    </AnimateSharedLayout>
+    <SessionProvider session={session}>
+      <StoreProvider>
+        {Component.auth ? (
+          <Auth>
+            getLayout(
+            <Component {...pageProps} />)
+          </Auth>
+        ) : (
+          getLayout(<Component {...pageProps} />)
+        )}
+      </StoreProvider>
+    </SessionProvider>
   );
 }
 

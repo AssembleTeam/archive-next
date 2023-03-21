@@ -11,7 +11,7 @@ const Topbar = ({ showNav, setShowNav }) => {
         showNav ? 'pl-56' : ''
       }`}
     >
-      <div className="ml-4 p-1 md:pl-16 bg-gray-200 md:bg-inherit rounded-lg">
+      <div className="ml-4 md:ml-0 p-1 md:pl-16 bg-gray-200 md:bg-inherit rounded-lg">
         <HiMenuAlt3
           className="h-8 w-8 text-gray-700 cursor-pointer"
           onClick={() => setShowNav(!showNav)}
