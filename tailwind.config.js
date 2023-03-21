@@ -5,7 +5,14 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      gridTemplateColumns: {
+        fluid: 'repeat(auto-fit,minmax(150px,1fr))',
+      },
+      fontFamily: {
+        manrope: ['Manrope', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 };

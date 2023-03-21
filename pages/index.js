@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -11,12 +12,49 @@ export default function Home() {
 
       <h1 className="text-gray-700 text-3xl font-bold mb-8">Dashboard</h1>
 
-      <div className="grid lg:grid-cols-3 gap-5 mb-16">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
+        <div className="rounded bg-white h-40 shadow-sm"></div>
         <div className="rounded bg-white h-40 shadow-sm"></div>
         <div className="rounded bg-white h-40 shadow-sm"></div>
         <div className="rounded bg-white h-40 shadow-sm"></div>
       </div>
-      <div className="grid col-1 bg-white h-96 shadow-sm"></div>
+      <div className="flex flex-col bg-white h-96 shadow-sm p-3">
+        <div className="flex justify-between items-center">
+          <h3 className="font-semibold">Archive</h3>
+          <Link href="/" className="text-orange-400 text-sm font-semibold">
+            View all
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 items-center gap-4 mt-16">
+          <div className="grid grid-cols-fluid gap-5 font-semibold border-b pb-2">
+            <h2>Date</h2>
+            <h2 className="text-center">Status</h2>
+            <h2 className="text-center">Expenses</h2>
+            <h2 className="text-center">Amount</h2>
+            <h2 className="text-right">Archive</h2>
+          </div>
+          <div className="grid grid-cols-fluid items-center gap-5">
+            <p className="text-gray-400">Dec 1, 2022</p>
+            <div className="text-center">
+              <span className="px-2 py-1 text-sm bg-green-100 rounded-lg border border-green-600 text-green-600 font-semibold w-fit">
+                Paid
+              </span>
+            </div>
+            <div className="flex flex-col md:pl-[3.9rem]">
+              <p className="text-gray-800 font-semibold text-sm">
+                IKEA table top
+              </p>
+              <p className="text-gray-300 text-sm">Office equipment</p>
+            </div>
+            <p className="md:pl-[4.4rem]">$300</p>
+            <div className="flex flex-col items-end">
+              <p className="text-orange-400 font-medium">View archive</p>
+              <p className="text-gray-400 text-sm">#63sh9011</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
