@@ -4,7 +4,7 @@ import Table from '../components/Table';
 
 export default function Archives() {
   return (
-    <main>
+    <>
       <Head>
         <title>Arsip surat</title>
         <meta name="archive page" content="view all archives" />
@@ -14,7 +14,7 @@ export default function Archives() {
       <section>
         <Table />
       </section>
-    </main>
+    </>
   );
 }
 

@@ -1,27 +1,8 @@
 import Head from 'next/head';
 import Table from '../components/Table';
 import Layout from '../components/Layout';
-import { Component } from 'react';
-import Chart from 'react-apexcharts';
 
 export default function Home() {
-  const charts = {
-    options: {
-      chart: {
-        id: 'basic-bar',
-      },
-      xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
-      },
-    },
-    series: [
-      {
-        name: 'series-1',
-        data: [30, 40, 45, 50, 49, 60, 70, 91],
-      },
-    ],
-  };
-
   return (
     <>
       <Head>
@@ -33,16 +14,9 @@ export default function Home() {
       <h1 className="text-gray-700 text-3xl font-bold mb-8">Dashboard</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-16">
-        <div className="rounded bg-white shadow-sm py-2 px-1 h-[15rem]">
-          <Chart
-            options={charts.options}
-            series={charts.series}
-            type="line"
-            height="100%"
-          />
-        </div>
-        <div className="rounded bg-white shadow-sm h-[15rem]"></div>
-        <div className="rounded bg-white shadow-sm h-[15rem]"></div>
+        <div className="rounded bg-white shadow-sm py-2 px-1 md:h-[12rem] min-h-[12rem] max-h-[12rem]"></div>
+        <div className="rounded bg-white shadow-sm py-2 px-1 md:h-[12rem] min-h-[12rem] max-h-[12rem]"></div>
+        <div className="rounded bg-white shadow-sm py-2 px-1 md:h-[12rem] min-h-[12rem] max-h-[12rem]"></div>
       </div>
 
       <Table />

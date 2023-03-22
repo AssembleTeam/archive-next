@@ -10,7 +10,7 @@ module.exports = {
         fluid: 'repeat(auto-fit,minmax(150px,1fr))',
       },
       fontFamily: {
-        manrope: ['Manrope', 'sans-serif'],
+        manrope: ['Poppins', 'sans-serif'],
       },
     },
   },

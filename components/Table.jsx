@@ -18,7 +18,7 @@ export default function Table() {
   }
 
   return (
-    <div className="flex flex-col bg-white h-96 shadow-sm p-3">
+    <div className="flex flex-col bg-white h-96 shadow-sm p-8">
       <div className="flex justify-between items-center">
         <h3 className="font-semibold">Archive</h3>
         {router.pathname == '/' ? (

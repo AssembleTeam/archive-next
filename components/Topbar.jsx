@@ -20,8 +20,9 @@ const Topbar = ({ showNav, setShowNav }) => {
 
       <div className="flex items-center pr-4 md:pr-16">
         <Popover className="relative">
-          <Popover.Button className="outline-none mr-5 md:mr-8 cursor-pointer text-gray-700">
+          <Popover.Button className="outline-none mr-5 md:mr-8 cursor-pointer text-gray-700 relative">
             <HiBell className="w-6 h-6" />
+            <div className="bg-red-500 w-3 h-3 rounded-full absolute right-0 top-0" />
           </Popover.Button>
           <Transition
             as={Fragment}
@@ -90,7 +91,7 @@ const Topbar = ({ showNav, setShowNav }) => {
               <div className="p-1">
                 <Menu.Item>
                   <Link
-                    href=""
+                    href="/profile"
                     className="flex hover:bg-orange-500 text-gray-700 hover:text-white rounded p-2 text-sm group transition-colors items-center"
                   >
                     <HiUser className="w-4 h-4 mr-2" />
@@ -98,13 +99,10 @@ const Topbar = ({ showNav, setShowNav }) => {
                   </Link>
                 </Menu.Item>
                 <Menu.Item>
-                  <Link
-                    href=""
-                    className="flex hover:bg-orange-500 text-gray-700 hover:text-white rounded p-2 text-sm group transition-colors items-center"
-                  >
+                  <span className="flex hover:bg-orange-500 text-gray-700 hover:text-white rounded p-2 text-sm group transition-colors items-center">
                     <MdLogout className="w-4 h-4 mr-2" />
                     Logout
-                  </Link>
+                  </span>
                 </Menu.Item>
               </div>
             </Menu.Items>

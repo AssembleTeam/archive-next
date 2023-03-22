@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { forwardRef } from 'react';
 import { MdHome, MdCreditCard, MdVerifiedUser } from 'react-icons/md';
+import { HiUserCircle } from 'react-icons/hi';
 
 const Sidebar = forwardRef(({ showNav }, ref) => {
   const router = useRouter();
@@ -63,6 +64,25 @@ const Sidebar = forwardRef(({ showNav }, ref) => {
             </div>
             <div>
               <p>Billing</p>
+            </div>
+          </div>
+        </Link>
+      </div>
+      <div className="flex flex-col">
+        <h3 className="mx-5 font-bold mb-2 text-gray-700">Settings</h3>
+        <Link href="/profile">
+          <div
+            className={`pl-6 py-3 mx-5 rounded text-center cursor-pointer mb-3 flex items-center transition-colors ${
+              router.pathname == '/profile'
+                ? 'bg-orange-100 text-orange-500'
+                : 'text-gray-400 hover:bg-gray-100 hover:text-orange-500'
+            }`}
+          >
+            <div className="mr-2">
+              <HiUserCircle className="h-5 w-5" />
+            </div>
+            <div>
+              <p>Profile</p>
             </div>
           </div>
         </Link>
