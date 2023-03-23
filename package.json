@@ -10,12 +10,9 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.7",
-<<<<<<< HEAD
     "apexcharts": "^3.37.1",
     "argon2": "^0.30.3",
-=======
     "chart.js": "^4.2.1",
->>>>>>> 504d5fec1c882fe97317ccb31049cc6b993f4ad1
     "framer-motion": "^8.0.2",
     "mongoose": "^6.8.2",
     "next": "13.1.1",
