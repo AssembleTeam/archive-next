@@ -1,6 +1,20 @@
 import Head from 'next/head';
+import Link from 'next/link';
+
 import Table from '../components/Table';
 import Layout from '../components/Layout';
+
+import { AiFillMail, AiOutlineUser } from 'react-icons/ai';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 
 export default function Home() {
   return (
@@ -11,15 +25,61 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className="text-gray-700 text-3xl font-bold mb-8">Dashboard</h1>
+      <h1 className="text-gray-700 text-3xl font-semibold mb-8">Dashboard</h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-16">
-        <div className="rounded bg-white shadow-sm py-2 px-1 md:h-[12rem] min-h-[12rem] max-h-[12rem]"></div>
-        <div className="rounded bg-white shadow-sm py-2 px-1 md:h-[12rem] min-h-[12rem] max-h-[12rem]"></div>
-        <div className="rounded bg-white shadow-sm py-2 px-1 md:h-[12rem] min-h-[12rem] max-h-[12rem]"></div>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 mb-16">
+        <div className="rounded-lg bg-white shadow-sm py-4 px-8 md:h-[10rem] min-h-[10rem] max-h-[10rem] flex justify-center gap-3 items-center">
+          <div className="flex flex-col items-center justify-center">
+            <AiFillMail className="w-8 h-8 text-orange-500" />
+            <span className="text-sm">1,091</span>
+            <span className="text-sm text-orange-500 font-medium">
+              Emails sent
+            </span>
+          </div>
+        </div>
+        <div className="rounded-lg bg-white shadow-sm py-2 px-1 md:h-[10rem] min-h-[10rem] max-h-[10rem]"></div>
+        <div className="rounded-lg bg-white shadow-sm py-2 px-1 md:h-[10rem] min-h-[10rem] max-h-[10rem]"></div>
       </div>
 
       <Table />
+
+      <div className="grid grid-cols-6 gap-5 my-16">
+        {/* mails senders */}
+        <div className="bg-white rounded-lg shadow py-4 px-8 col-span-2">
+          <div className="flex items-center justify-between">
+            <h1 className="text-gray-700 font-medium">Latest Mails</h1>
+            <Link
+              href="/users"
+              className="text-orange-400 text-sm border border-orange-300 px-3 py-1 rounded-lg"
+            >
+              View all
+            </Link>
+          </div>
+
+          <div className="flex flex-col gap-4 mt-5">
+            <div className="flex items-center gap-4">
+              <AiOutlineUser className="w-7 h-7" />
+              <div className="flex flex-col">
+                <span className="text-base">Dini abshari</span>
+                <span className="text-sm text-gray-500">204833494812</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <AiOutlineUser className="w-7 h-7" />
+              <div className="flex flex-col">
+                <span className="text-base">Much Darmawan</span>
+                <span className="text-sm text-gray-500">204833494812</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* charts */}
+        <div className="bg-white rounded-lg shadow py-4 px-8 col-span-4">
+          <h1 className="text-gray-700 font-medium mb-8">Mails sent</h1>
+        </div>
+      </div>
     </>
   );
 }

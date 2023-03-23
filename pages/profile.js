@@ -54,7 +54,7 @@ const Profile = () => {
               <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-8 sm:w-2/3">
                 <button
                   type="submit"
-                  className="uppercase font-light bg-[#1e1e1e] px-5 py-1.5 text-white rounded text-xs tracking-wider"
+                  className="uppercase font-light bg-[#1e1e1e] hover:bg-gray-700 px-5 py-1.5 text-white rounded text-xs tracking-wider"
                 >
                   save
                 </button>
@@ -121,7 +121,7 @@ const Profile = () => {
               <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-8 sm:w-2/3">
                 <button
                   type="submit"
-                  className="uppercase font-light bg-[#1e1e1e] px-5 py-1.5 text-white rounded text-xs tracking-wider"
+                  className="uppercase font-light bg-[#1e1e1e] hover:bg-gray-700 px-5 py-1.5 text-white rounded text-xs tracking-wider"
                 >
                   update
                 </button>

@@ -12,6 +12,7 @@ export default function Archives() {
       </Head>
 
       <section>
+        <h1 className="text-gray-700 text-3xl font-semibold mb-8">Archives</h1>
         <Table />
       </section>
     </>

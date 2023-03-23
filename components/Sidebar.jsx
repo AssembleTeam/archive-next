@@ -1,8 +1,13 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { forwardRef } from 'react';
-import { MdHome, MdCreditCard, MdVerifiedUser } from 'react-icons/md';
-import { HiUserCircle } from 'react-icons/hi';
+
+import {
+  AiOutlineUsergroupAdd,
+  AiOutlineDashboard,
+  AiOutlineLineChart,
+} from 'react-icons/ai';
+import { HiUserCircle, HiOutlineMailOpen } from 'react-icons/hi';
 
 const Sidebar = forwardRef(({ showNav }, ref) => {
   const router = useRouter();
@@ -26,44 +31,61 @@ const Sidebar = forwardRef(({ showNav }, ref) => {
             }`}
           >
             <div className="mr-2">
-              <MdHome className="h-5 w-5" />
+              <AiOutlineDashboard className="h-5 w-5" />
             </div>
             <div>
-              <p>Home</p>
+              <p>Dashboard</p>
             </div>
           </div>
         </Link>
 
-        <Link href="/account">
+        <Link href="/archives">
           <div
             className={`pl-6 py-3 mx-5 rounded text-center cursor-pointer mb-3 flex items-center transition-colors ${
-              router.pathname == '/account'
+              router.pathname == '/archives'
                 ? 'bg-orange-100 text-orange-500'
                 : 'text-gray-400 hover:bg-gray-100 hover:text-orange-500'
             }`}
           >
             <div className="mr-2">
-              <MdVerifiedUser className="h-5 w-5" />
+              <HiOutlineMailOpen className="h-5 w-5" />
             </div>
             <div>
-              <p>Account</p>
+              <p>Archives</p>
             </div>
           </div>
         </Link>
 
-        <Link href="/billing">
+        <Link href="/users">
           <div
             className={`pl-6 py-3 mx-5 rounded text-center cursor-pointer mb-3 flex items-center transition-colors ${
-              router.pathname == '/billing'
+              router.pathname == '/users'
                 ? 'bg-orange-100 text-orange-500'
                 : 'text-gray-400 hover:bg-gray-100 hover:text-orange-500'
             }`}
           >
             <div className="mr-2">
-              <MdCreditCard className="h-5 w-5" />
+              <AiOutlineUsergroupAdd className="h-5 w-5" />
             </div>
             <div>
-              <p>Billing</p>
+              <p>Users</p>
+            </div>
+          </div>
+        </Link>
+
+        <Link href="/charts">
+          <div
+            className={`pl-6 py-3 mx-5 rounded text-center cursor-pointer mb-3 flex items-center transition-colors ${
+              router.pathname == '/charts'
+                ? 'bg-orange-100 text-orange-500'
+                : 'text-gray-400 hover:bg-gray-100 hover:text-orange-500'
+            }`}
+          >
+            <div className="mr-2">
+              <AiOutlineLineChart className="h-5 w-5" />
+            </div>
+            <div>
+              <p>Charts</p>
             </div>
           </div>
         </Link>
