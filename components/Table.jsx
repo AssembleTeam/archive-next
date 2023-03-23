@@ -18,13 +18,13 @@ export default function Table() {
   }
 
   return (
-    <div className="flex flex-col bg-white h-96 shadow-sm p-8">
+    <div className="flex flex-col bg-white h-96 shadow-sm p-8 rounded-lg">
       <div className="flex justify-between items-center">
-        <h3 className="font-semibold">Archive</h3>
+        <h3 className="font-medium">Archive</h3>
         {router.pathname == '/' ? (
           <Link
             href="/archives"
-            className="text-orange-400 text-sm font-semibold"
+            className="text-orange-400 text-sm border border-orange-300 px-3 py-1 rounded-lg"
           >
             View all
           </Link>
@@ -75,23 +75,29 @@ export default function Table() {
                     <form encType="multipart/form-data">
                       <div className="flex items-center justify-between gap-8 mb-5">
                         <div className="flex flex-col gap-2 w-full">
-                          <label htmlFor="nosurat" className="font-semibold">
+                          <label
+                            htmlFor="nosurat"
+                            className="text-sm font-medium"
+                          >
                             No surat
                           </label>
                           <input
                             type="text"
-                            className="border rounded px-3 py-1 shadow"
+                            className="border px-3 py-1.5 rounded placeholder:text-sm text-sm shadow"
                             id="nosurat"
                             placeholder="203311"
                           />
                         </div>
                         <div className="flex flex-col gap-2 w-full">
-                          <label htmlFor="lampiran" className="font-semibold">
+                          <label
+                            htmlFor="lampiran"
+                            className="text-sm font-medium"
+                          >
                             Lampiran
                           </label>
                           <input
                             type="text"
-                            className="border rounded px-3 py-1 shadow"
+                            className="border px-3 py-1.5 rounded placeholder:text-sm text-sm shadow"
                             id="lampiran"
                             placeholder="2"
                           />
@@ -100,35 +106,45 @@ export default function Table() {
 
                       <div className="flex items-center justify-between gap-8 mb-5">
                         <div className="flex flex-col gap-2 w-full">
-                          <label htmlFor="jenis" className="font-semibold">
+                          <label
+                            htmlFor="jenis"
+                            className="text-sm font-medium"
+                          >
                             Jenis surat
                           </label>
                           <select
-                            className="border rounded px-3 py-1 shadow"
+                            className="border px-3 py-1.5 rounded placeholder:text-sm text-sm shadow"
                             id="jenis"
                           >
                             <option>Select</option>
-                            <option>Perintah</option>
+                            <option>Masuk</option>
+                            <option>Keluar</option>
                           </select>
                         </div>
                         <div className="flex flex-col gap-2 w-full">
-                          <label htmlFor="tanggal" className="font-semibold">
+                          <label
+                            htmlFor="tanggal"
+                            className="text-sm font-medium"
+                          >
                             Tanggal
                           </label>
                           <input
                             type="date"
-                            className="border rounded px-3 py-1 shadow"
+                            className="border px-3 py-1.5 rounded placeholder:text-sm text-sm shadow"
                             id="tanggal"
                             placeholder="2"
                           />
                         </div>
                         <div className="flex flex-col gap-2 w-full">
-                          <label htmlFor="instansi" className="font-semibold">
+                          <label
+                            htmlFor="instansi"
+                            className="text-sm font-medium"
+                          >
                             Instansi
                           </label>
                           <input
                             type="text"
-                            className="border rounded px-3 py-1 shadow"
+                            className="border px-3 py-1.5 rounded placeholder:text-sm text-sm shadow"
                             id="instansi"
                             placeholder="SMK Negeri 1 Jayapura"
                           />
@@ -136,7 +152,9 @@ export default function Table() {
                       </div>
 
                       <div>
-                        <h3 className="font-semibold mb-2">File lampiran</h3>
+                        <h3 className="text-sm font-medium mb-2">
+                          File lampiran
+                        </h3>
                         <div className="bg-gray-100 p-2 rounded">
                           <label
                             htmlFor="fileLampiran"
@@ -160,7 +178,7 @@ export default function Table() {
                   <div className="mt-4 w-full flex justify-end">
                     <button
                       type="button"
-                      className="inline-flex justify-center font-bold tracking-widest rounded border border-blue-400 border-transparent bg-blue-100 px-7 py-2 text-sm text-blue-800 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="uppercase font-light bg-[#1e1e1e] px-5 py-1.5 shadow-md text-white rounded text-xs tracking-wider hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={closeModal}
                     >
                       Save
@@ -196,7 +214,9 @@ export default function Table() {
           </div>
           <p className="md:pl-[4.4rem] hidden md:inline-block">$300</p>
           <div className="flex flex-col items-end">
-            <p className="text-orange-400 font-medium">View archive</p>
+            <Link href={`/letter/${1}`} className="text-orange-400 font-medium">
+              View archive
+            </Link>
             <p className="text-gray-400 text-sm">#63sh9011</p>
           </div>
         </div>
