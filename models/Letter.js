@@ -6,9 +6,8 @@ const letterSchema = new mongoose.Schema(
     kategoriSurat: { type: String, required: true },
     perihalSurat: { type: String, required: true },
     asalSurat: { type: String, required: true },
-    tglSurat: { type: Date, required: true },
     tglDiterima: { type: Date, required: true },
-    photoSurat: { type: String, required: true },
+    photoSurat: { type: String },
   },
   { timestamps: true }
 );

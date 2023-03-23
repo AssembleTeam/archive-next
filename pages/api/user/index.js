@@ -23,23 +23,27 @@ export default async function handler(req, res) {
 
   if (method === 'POST') {
     try {
-      const {firstName, lastName, email, password, confirmPassword, photo} = req.body;
+      const { firstName, lastName, email, password, confirmPassword, photo } =
+        req.body;
       let pathPhoto;
 
-      if(password !== confirmPassword) return res.status(400).json({ message: 'Password dan confirm password harus sama.' });
-      if(photo === '' || photo === null) {
+      if (password !== confirmPassword)
+        return res
+          .status(400)
+          .json({ message: 'Password dan confirm password harus sama.' });
+      if (photo === '' || photo === null) {
         pathPhoto = '/images/profiles/default-user.jpg';
-      }else{
+      } else {
         pathPhoto = photo;
       }
 
       const hashPassword = await argon2.hash(password);
       const userData = {
-        "firstName": firstName,
-        "lastName": lastName,
-        "email": email,
-        "password": hashPassword,
-        "photo": pathPhoto
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: hashPassword,
+        photo: pathPhoto,
       };
       const user = await User.create(userData);
       res.status(201).json(user);

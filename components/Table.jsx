@@ -9,6 +9,15 @@ export default function Table() {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const [surat, setSurat] = useState({
+    noSurat: '',
+    kategoriSurat: '',
+    perihalSurat: '',
+    asalSurat: '',
+    tglDiterima: '',
+    photoSurat: '',
+  });
+
   function closeModal() {
     setIsOpen(false);
   }
@@ -16,6 +25,18 @@ export default function Table() {
   function openModal() {
     setIsOpen(true);
   }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const response = await fetch('/api/letter', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(),
+    });
+  };
 
   return (
     <div className="flex flex-col bg-white h-96 shadow-sm p-8 rounded-lg">
@@ -72,7 +93,7 @@ export default function Table() {
                     Add Archive
                   </Dialog.Title>
                   <div className="mt-6">
-                    <form encType="multipart/form-data">
+                    <form encType="multipart/form-data" onSubmit={handleSubmit}>
                       <div className="flex items-center justify-between gap-8 mb-5">
                         <div className="flex flex-col gap-2 w-full">
                           <label
@@ -84,22 +105,30 @@ export default function Table() {
                           <input
                             type="text"
                             className="border px-3 py-1.5 rounded placeholder:text-sm text-sm shadow"
+                            value={surat.noSurat}
+                            onChange={({ target }) =>
+                              setSurat({ ...surat, noSurat: target.value })
+                            }
                             id="nosurat"
                             placeholder="203311"
                           />
                         </div>
                         <div className="flex flex-col gap-2 w-full">
                           <label
-                            htmlFor="lampiran"
+                            htmlFor="perihal"
                             className="text-sm font-medium"
                           >
-                            Lampiran
+                            Perihal
                           </label>
                           <input
                             type="text"
+                            value={surat.perihalSurat}
+                            onChange={({ target }) =>
+                              setSurat({ ...surat, perihalSurat: target.value })
+                            }
                             className="border px-3 py-1.5 rounded placeholder:text-sm text-sm shadow"
-                            id="lampiran"
-                            placeholder="2"
+                            id="perihal"
+                            placeholder="Perihal"
                           />
                         </div>
                       </div>
@@ -115,10 +144,16 @@ export default function Table() {
                           <select
                             className="border px-3 py-1.5 rounded placeholder:text-sm text-sm shadow"
                             id="jenis"
+                            onChange={({ target }) =>
+                              setSurat({
+                                ...surat,
+                                kategoriSurat: target.value,
+                              })
+                            }
                           >
                             <option>Select</option>
-                            <option>Masuk</option>
-                            <option>Keluar</option>
+                            <option value="masuk">Masuk</option>
+                            <option value="keluar">Keluar</option>
                           </select>
                         </div>
                         <div className="flex flex-col gap-2 w-full">
@@ -131,21 +166,29 @@ export default function Table() {
                           <input
                             type="date"
                             className="border px-3 py-1.5 rounded placeholder:text-sm text-sm shadow"
+                            value={surat.tglDiterima}
+                            onChange={({ target }) =>
+                              setSurat({ ...surat, tglDiterima: target.value })
+                            }
                             id="tanggal"
                             placeholder="2"
                           />
                         </div>
                         <div className="flex flex-col gap-2 w-full">
                           <label
-                            htmlFor="instansi"
+                            htmlFor="asalsurat"
                             className="text-sm font-medium"
                           >
-                            Instansi
+                            Asal surat
                           </label>
                           <input
                             type="text"
                             className="border px-3 py-1.5 rounded placeholder:text-sm text-sm shadow"
-                            id="instansi"
+                            value={surat.asalSurat}
+                            onChange={({ target }) =>
+                              setSurat({ ...surat, asalSurat: target.value })
+                            }
+                            id="asalsurat"
                             placeholder="SMK Negeri 1 Jayapura"
                           />
                         </div>
@@ -166,7 +209,13 @@ export default function Table() {
                             </p>
                             <input
                               type="file"
+                              accept=".jpg, .png, .jpeg"
+                              multiple
                               className="hidden"
+                              value={surat.photoSurat}
+                              onChange={({ target }) =>
+                                setSurat({ ...surat, photoSurat: target.value })
+                              }
                               id="fileLampiran"
                             />
                           </label>
@@ -177,9 +226,8 @@ export default function Table() {
 
                   <div className="mt-4 w-full flex justify-end">
                     <button
-                      type="button"
+                      type="submit"
                       className="uppercase font-light bg-[#1e1e1e] px-5 py-1.5 shadow-md text-white rounded text-xs tracking-wider hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
                     >
                       Save
                     </button>

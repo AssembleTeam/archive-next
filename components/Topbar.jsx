@@ -3,8 +3,19 @@ import { HiChevronDown, HiMenuAlt3, HiUser, HiBell } from 'react-icons/hi';
 import { MdCheck, MdLogout } from 'react-icons/md';
 import { Menu, Transition, Popover } from '@headlessui/react';
 import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 const Topbar = ({ showNav, setShowNav }) => {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  React.useEffect(() => {
+    if (!session?.user) {
+      router.push('/login');
+    }
+  }, [session]);
+
   return (
     <div
       className={`fixed bg-gray-100 w-full h-16 flex justify-between items-center transition-all duration-[300ms] ${
@@ -67,15 +78,12 @@ const Topbar = ({ showNav, setShowNav }) => {
             <Menu.Button className="inline-flex w-full justify-center items-center">
               <picture>
                 <img
-                  src="https://firebasestorage.googleapis.com/v0/b/messanger-e2203.appspot.com/o/images%2Fdini%20abshari?alt=media&token=6a5b1b4c-82f6-4a87-b0ba-d837378eb180"
-                  className="rounded-full h-8 w-8 md:mr-4 border-2 border-white shadow-sm"
+                  src={session?.user?.image}
+                  className="rounded-full h-8 w-8 border-2 border-white shadow-sm"
                   alt="profile"
                 />
               </picture>
-              <span className="hidden md:block font-medium text-gray-700">
-                Alief
-              </span>
-              <HiChevronDown className="ml-2 h-4 w-4 text-gray-700" />
+              <HiChevronDown className="h-4 w-4 text-gray-700" />
             </Menu.Button>
           </div>
           <Transition
@@ -98,12 +106,27 @@ const Topbar = ({ showNav, setShowNav }) => {
                     Profile
                   </Link>
                 </Menu.Item>
-                <Menu.Item>
-                  <span className="flex hover:bg-orange-500 text-gray-700 hover:text-white rounded p-2 text-sm group transition-colors items-center">
-                    <MdLogout className="w-4 h-4 mr-2" />
-                    Logout
-                  </span>
-                </Menu.Item>
+                {session?.user ? (
+                  <Menu.Item>
+                    <span
+                      onClick={() => signOut()}
+                      className="flex hover:bg-orange-500 cursor-pointer text-gray-700 hover:text-white rounded p-2 text-sm group transition-colors items-center"
+                    >
+                      <MdLogout className="w-4 h-4 mr-2" />
+                      Logout
+                    </span>
+                  </Menu.Item>
+                ) : (
+                  <Menu.Item>
+                    <Link
+                      href={'/login'}
+                      className="flex hover:bg-orange-500 text-gray-700 hover:text-white rounded p-2 text-sm group transition-colors items-center"
+                    >
+                      <MdLogout className="w-4 h-4 mr-2" />
+                      Login
+                    </Link>
+                  </Menu.Item>
+                )}
               </div>
             </Menu.Items>
           </Transition>

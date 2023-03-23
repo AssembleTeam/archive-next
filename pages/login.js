@@ -1,21 +1,33 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useContext, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import { AuthContext } from '../context/AuthStore';
 
 export default function Login() {
-  const { login, user, errorMsg } = useContext(AuthContext);
+  const { data: session } = useSession();
   const [userInfo, setUserInfo] = useState({ email: '', password: '' });
 
   const router = useRouter();
+  const { redirect } = router.query;
+
+  useEffect(() => {
+    if (session?.user) {
+      router.push(redirect || '/');
+    }
+  }, [router, session, redirect]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await login(userInfo.email, userInfo.password);
-      if (user !== 'undefined') {
+      const user = await signIn('credentials', {
+        redirect: false,
+        email: userInfo.email,
+        password: userInfo.password,
+      });
+
+      if (user.ok) {
         router.push('/');
       } else {
         toast.error(errorMsg);
@@ -109,17 +121,17 @@ export default function Login() {
                 </div>
               </form>
 
-              <div class="flex items-center pt-4 my-2">
-                <div class="flex-grow h-px bg-gray-400" />
+              <div className="flex items-center pt-4 my-2">
+                <div className="flex-grow h-px bg-gray-400" />
 
-                <span class="flex-shrink text-sm text-indigo-500 px-4 font-light">
+                <span className="flex-shrink text-sm text-indigo-500 px-4 font-light">
                   Do not have an account, yet?{' '}
                   <Link href="/register" className="font-semibold italic">
                     Sign up here.
                   </Link>
                 </span>
 
-                <div class="flex-grow h-px bg-gray-400" />
+                <div className="flex-grow h-px bg-gray-400" />
               </div>
             </div>
           </div>
