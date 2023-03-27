@@ -6,7 +6,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  @apply font-manrope;
+  @apply font-poppins;
   @apply bg-gray-100;
 }
 

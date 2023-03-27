@@ -1,13 +1,21 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { Fragment, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
-import { AiOutlineCloudUpload, AiOutlinePlusCircle } from 'react-icons/ai';
+import React, { Fragment, useEffect, useState } from 'react';
+import { Dialog, Combobox, Transition } from '@headlessui/react';
+import {
+  AiOutlineCloudUpload,
+  AiOutlinePlusCircle,
+  AiOutlineCheck,
+} from 'react-icons/ai';
+import { HiChevronDown } from 'react-icons/hi';
 
 export default function Table() {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [people, setPeople] = useState([]);
+  const [selected, setSelected] = useState('');
+  const [query, setQuery] = useState('');
 
   const [surat, setSurat] = useState({
     noSurat: '',
@@ -26,6 +34,17 @@ export default function Table() {
     setIsOpen(true);
   }
 
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await fetch('/api/user');
+      const data = await response.json();
+      setPeople(data);
+
+      return data;
+    };
+    fetchUsers();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -34,9 +53,37 @@ export default function Table() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(),
+      body: JSON.stringify({
+        noSurat: surat.noSurat,
+        perihalSurat: surat.perihalSurat,
+        kategoriSurat: surat.kategoriSurat,
+        asalSurat: surat.asalSurat,
+        tglDiterima: surat.tglDiterima,
+        photoSurat: surat.photoSurat,
+        kepada: selected._id,
+      }),
     });
+
+    const data = await response.json();
+
+    console.log(data);
   };
+
+  const filteredPeople =
+    query === ''
+      ? people
+      : people.filter((person) => {
+          return (
+            person.firstName
+              .toLowerCase()
+              .replace(/\s+/g, '')
+              .includes(query.toLowerCase().replace(/\s+/g, '')) ||
+            person.lastName
+              .toLowerCase()
+              .replace(/\s+/g, '')
+              .includes(query.toLowerCase().replace(/\s+/g, ''))
+          );
+        });
 
   return (
     <div className="flex flex-col bg-white h-96 shadow-sm p-8 rounded-lg">
@@ -133,6 +180,25 @@ export default function Table() {
                         </div>
                       </div>
 
+                      <div className="flex flex-col gap-2 w-full mb-5">
+                        <label
+                          htmlFor="asalsurat"
+                          className="text-sm font-medium"
+                        >
+                          Asal surat
+                        </label>
+                        <input
+                          type="text"
+                          className="border px-3 py-1.5 rounded placeholder:text-sm text-sm shadow"
+                          value={surat.asalSurat}
+                          onChange={({ target }) =>
+                            setSurat({ ...surat, asalSurat: target.value })
+                          }
+                          id="asalsurat"
+                          placeholder="SMK Negeri 1 Jayapura"
+                        />
+                      </div>
+
                       <div className="flex items-center justify-between gap-8 mb-5">
                         <div className="flex flex-col gap-2 w-full">
                           <label
@@ -174,24 +240,96 @@ export default function Table() {
                             placeholder="2"
                           />
                         </div>
-                        <div className="flex flex-col gap-2 w-full">
-                          <label
-                            htmlFor="asalsurat"
-                            className="text-sm font-medium"
-                          >
-                            Asal surat
-                          </label>
-                          <input
-                            type="text"
-                            className="border px-3 py-1.5 rounded placeholder:text-sm text-sm shadow"
-                            value={surat.asalSurat}
-                            onChange={({ target }) =>
-                              setSurat({ ...surat, asalSurat: target.value })
-                            }
-                            id="asalsurat"
-                            placeholder="SMK Negeri 1 Jayapura"
-                          />
-                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-2 w-full mb-5">
+                        <label htmlFor="kepada" className="text-sm font-medium">
+                          Ditujukan kepada
+                        </label>
+
+                        <Combobox value={selected} onChange={setSelected}>
+                          <div className="relative mt-1">
+                            <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md sm:text-sm">
+                              <Combobox.Input
+                                className="w-full py-2 pl-3 pr-10 text-sm leading-5 text-gray-900"
+                                displayValue={(person) =>
+                                  [person.firstName, '', person.lastName].join(
+                                    ' '
+                                  )
+                                }
+                                onChange={(event) =>
+                                  setQuery(event.target.value)
+                                }
+                              />
+                              <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+                                <HiChevronDown
+                                  className="h-5 w-5 text-gray-400"
+                                  aria-hidden="true"
+                                />
+                              </Combobox.Button>
+                            </div>
+
+                            <Transition
+                              as={Fragment}
+                              leave="transition ease-in duration-100"
+                              leaveFrom="opacity-100"
+                              leaveTo="opacity-0"
+                              afterLeave={() => setQuery('')}
+                            >
+                              <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg focus:outline-none sm:text-sm">
+                                {filteredPeople.length === 0 && query !== '' ? (
+                                  <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
+                                    Nothing found.
+                                  </div>
+                                ) : (
+                                  filteredPeople.map((person) => (
+                                    <Combobox.Option
+                                      key={person._id}
+                                      className={({ active }) =>
+                                        `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                          active
+                                            ? 'bg-teal-600 text-white'
+                                            : 'text-gray-900'
+                                        }`
+                                      }
+                                      value={person}
+                                    >
+                                      {({ selected, active }) => (
+                                        <>
+                                          <span
+                                            className={`block truncate ${
+                                              selected
+                                                ? 'font-medium'
+                                                : 'font-normal'
+                                            }`}
+                                          >
+                                            {person.firstName +
+                                              ' ' +
+                                              person.lastName}
+                                          </span>
+                                          {selected ? (
+                                            <span
+                                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
+                                                active
+                                                  ? 'text-white'
+                                                  : 'text-teal-600'
+                                              }`}
+                                            >
+                                              <AiOutlineCheck
+                                                className="h-5 w-5"
+                                                aria-hidden="true"
+                                              />
+                                            </span>
+                                          ) : null}
+                                        </>
+                                      )}
+                                    </Combobox.Option>
+                                  ))
+                                )}
+                              </Combobox.Options>
+                            </Transition>
+                          </div>
+                        </Combobox>
                       </div>
 
                       <div>
@@ -221,16 +359,16 @@ export default function Table() {
                           </label>
                         </div>
                       </div>
-                    </form>
-                  </div>
 
-                  <div className="mt-4 w-full flex justify-end">
-                    <button
-                      type="submit"
-                      className="uppercase font-light bg-[#1e1e1e] px-5 py-1.5 shadow-md text-white rounded text-xs tracking-wider hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    >
-                      Save
-                    </button>
+                      <div className="mt-4 w-full flex justify-end">
+                        <button
+                          type="submit"
+                          className="uppercase font-light bg-[#1e1e1e] px-5 py-1.5 shadow-md text-white rounded text-xs tracking-wider hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

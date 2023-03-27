@@ -8,6 +8,7 @@ const letterSchema = new mongoose.Schema(
     asalSurat: { type: String, required: true },
     tglDiterima: { type: Date, required: true },
     photoSurat: { type: String },
+    kepada: { type: mongoose.Types.ObjectId, ref: 'User' },
   },
   { timestamps: true }
 );

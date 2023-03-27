@@ -1,7 +1,11 @@
 import Head from 'next/head';
 import Layout from '../components/Layout';
 
+import { useSession } from 'next-auth/react';
+
 const Profile = () => {
+  const { data: session } = useSession();
+
   return (
     <section>
       <Head>
@@ -30,6 +34,7 @@ const Profile = () => {
                 </label>
                 <input
                   type="text"
+                  value={session?.user.name}
                   className="border px-3 py-1.5 rounded w-full sm:w-[80%] ml-auto placeholder:text-sm text-sm"
                   placeholder="Username"
                   id="username"
@@ -45,6 +50,7 @@ const Profile = () => {
                 </label>
                 <input
                   type="email"
+                  value={session?.user.email}
                   className="border px-3 py-1.5 rounded w-full sm:w-[80%] ml-auto placeholder:text-sm text-sm"
                   placeholder="Email"
                   id="email"

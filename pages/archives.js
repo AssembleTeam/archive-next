@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Layout from '../components/Layout';
 import Table from '../components/Table';
 
-export default function Archives() {
+export default function Archives({ users }) {
   return (
     <>
       <Head>
@@ -13,7 +13,7 @@ export default function Archives() {
 
       <section>
         <h1 className="text-gray-700 text-3xl font-semibold mb-8">Archives</h1>
-        <Table />
+        <Table data={users} />
       </section>
     </>
   );
@@ -22,7 +22,3 @@ export default function Archives() {
 Archives.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
-
-async function getStaticProps(context) {
-  return {};
-}
