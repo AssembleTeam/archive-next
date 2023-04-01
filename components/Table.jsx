@@ -16,6 +16,16 @@ export default function Table() {
   const [people, setPeople] = useState([]);
   const [selected, setSelected] = useState('');
   const [query, setQuery] = useState('');
+  const [image, setImage] = useState(null);
+  const [createObjectURL, setCreateObjectURL] = useState(null);
+
+  const uploadToClient = (e) => {
+    if(e.target.files && e.target.files[0]){
+      const i = e.target.files[0];
+      setImage(i);
+      setCreateObjectURL(URL.createObjectURL(i));
+    }
+  }
 
   const [surat, setSurat] = useState({
     noSurat: '',
@@ -48,7 +58,14 @@ export default function Table() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch('/api/letter', {
+    const bodyUpload = new FormData();
+    bodyUpload.append('file', image);
+    const response = await fetch('/api/letter/upload', {
+      method: 'POST',
+      body: bodyUpload
+    });
+
+    const response2 = await fetch('/api/letter', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -64,9 +81,10 @@ export default function Table() {
       }),
     });
 
-    const data = await response.json();
+    const data = await response2.json();
 
     console.log(data);
+    console.log(response);
   };
 
   const filteredPeople =
@@ -351,9 +369,7 @@ export default function Table() {
                               multiple
                               className="hidden"
                               value={surat.photoSurat}
-                              onChange={({ target }) =>
-                                setSurat({ ...surat, photoSurat: target.value })
-                              }
+                              onChange={uploadToClient}
                               id="fileLampiran"
                             />
                           </label>
