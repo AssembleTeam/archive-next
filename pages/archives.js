@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Layout from '../components/Layout';
 import Table from '../components/Table';
 
-export default function Archives({ users }) {
+export default function Archives({ users, data }) {
   return (
     <>
       <Head>

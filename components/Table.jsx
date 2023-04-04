@@ -8,14 +8,27 @@ import {
   AiOutlineCheck,
 } from 'react-icons/ai';
 import { HiChevronDown } from 'react-icons/hi';
+import { toast, ToastContainer } from 'react-toastify';
+import axios from 'axios';
 
 export default function Table() {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [letters, setLetters] = useState([]);
   const [people, setPeople] = useState([]);
   const [selected, setSelected] = useState('');
   const [query, setQuery] = useState('');
+  const [image, setImage] = useState(null);
+  const [createObjectURL, setCreateObjectURL] = useState(null);
+
+  const uploadToClient = async (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const i = e.target.files[0];
+      setImage(i);
+      setCreateObjectURL(URL.createObjectURL(i));
+    }
+  };
 
   const [surat, setSurat] = useState({
     noSurat: '',
@@ -42,11 +55,22 @@ export default function Table() {
 
       return data;
     };
+
+    const fetchLetters = async () => {
+      const response = await axios.get('/api/letter');
+      setLetters(response.data);
+    };
+
+    fetchLetters();
     fetchUsers();
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (createObjectURL === null || !createObjectURL) {
+      console.log('no image detected');
+    }
 
     const response = await fetch('/api/letter', {
       method: 'POST',
@@ -59,12 +83,38 @@ export default function Table() {
         kategoriSurat: surat.kategoriSurat,
         asalSurat: surat.asalSurat,
         tglDiterima: surat.tglDiterima,
-        photoSurat: surat.photoSurat,
+        photoSurat: createObjectURL,
         kepada: selected._id,
       }),
     });
 
+    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
+    const res = await fetch('/api/cloudinary');
+    const signData = await res.json();
+
+    const formData = new FormData();
+    formData.append('file', image);
+    formData.append('timestamp', signData.timestamp);
+    formData.append('signature', signData.signature);
+    formData.append('api_key', process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
+
+    // use these 2 lines of code to upload multiple files
+    /*
+      formData.append('eager', 'c_pad,h_300,w_400|c_crop,h_200,w_260')
+      formData.append('folder', 'archive');
+    */
+
+    const uploadImage = await axios.post(url, formData);
+    setCreateObjectURL(uploadImage.data.secure_url);
+
+    setImage(null);
+    console.log(uploadImage.data);
+
     const data = await response.json();
+    if (response.ok) {
+      closeModal();
+      toast.success('Letter added successfully');
+    }
 
     console.log(data);
   };
@@ -85,8 +135,28 @@ export default function Table() {
           );
         });
 
+  const formatDate = (date) => {
+    const initializeDate = new Date(date);
+    const convertTo = initializeDate.toDateString();
+
+    return convertTo;
+  };
+
   return (
     <div className="flex flex-col bg-white h-96 shadow-sm p-8 rounded-lg">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+
       <div className="flex justify-between items-center">
         <h3 className="font-medium">Archive</h3>
         {router.pathname == '/' ? (
@@ -242,6 +312,7 @@ export default function Table() {
                         </div>
                       </div>
 
+                      {/* combobox "kepada" input */}
                       <div className="flex flex-col gap-2 w-full mb-5">
                         <label htmlFor="kepada" className="text-sm font-medium">
                           Ditujukan kepada
@@ -332,6 +403,7 @@ export default function Table() {
                         </Combobox>
                       </div>
 
+                      {/* input file */}
                       <div>
                         <h3 className="text-sm font-medium mb-2">
                           File lampiran
@@ -342,18 +414,19 @@ export default function Table() {
                             className="w-full h-28 flex flex-col items-center justify-center border-2 border-dashed bg-white"
                           >
                             <AiOutlineCloudUpload className="w-8 h-8 text-gray-500" />
-                            <p className="font-semibold text-gray-500">
-                              Drag files here or click in this area
-                            </p>
+                            <div className="font-semibold text-gray-500">
+                              {image ? (
+                                <p>{image.name}</p>
+                              ) : (
+                                <p>Drag files here or click in this area</p>
+                              )}
+                            </div>
                             <input
                               type="file"
-                              accept=".jpg, .png, .jpeg"
+                              accept="image/*"
                               multiple
                               className="hidden"
-                              value={surat.photoSurat}
-                              onChange={({ target }) =>
-                                setSurat({ ...surat, photoSurat: target.value })
-                              }
+                              onChange={uploadToClient}
                               id="fileLampiran"
                             />
                           </label>
@@ -382,30 +455,42 @@ export default function Table() {
           <h2>Date</h2>
           <h2 className="md:text-center">Status</h2>
           <h2 className="md:text-center">Expenses</h2>
-          <h2 className="md:text-center hidden md:inline-block">Amount</h2>
+          <h2 className="md:text-center hidden md:inline-block">Jenis</h2>
           <h2 className="text-right">Archive</h2>
         </div>
-        <div className="grid md:grid-cols-fluid grid-cols-4 items-center gap-5">
-          <p className="text-gray-400">Dec 1, 2022</p>
-          <div className="md:text-center">
-            <span className="px-2 py-1 text-sm bg-green-100 rounded-lg border border-green-600 text-green-600 font-semibold w-fit">
-              Paid
-            </span>
-          </div>
-          <div className="flex flex-col md:pl-[3.9rem]">
-            <p className="text-gray-800 font-semibold text-sm">
-              IKEA table top
-            </p>
-            <p className="text-gray-300 text-sm">Office equipment</p>
-          </div>
-          <p className="md:pl-[4.4rem] hidden md:inline-block">$300</p>
-          <div className="flex flex-col items-end">
-            <Link href={`/letter/${1}`} className="text-orange-400 font-medium">
-              View archive
-            </Link>
-            <p className="text-gray-400 text-sm">#63sh9011</p>
-          </div>
-        </div>
+
+        {letters &&
+          letters.map((letter, index) => (
+            <div
+              className="grid md:grid-cols-fluid grid-cols-4 items-center gap-5"
+              key={index}
+            >
+              <p className="text-gray-400">{formatDate(letter.tglDiterima)}</p>
+              <div className="md:text-center">
+                <span className="px-2 py-1 text-sm bg-green-100 rounded-lg border border-green-600 text-green-600 font-semibold w-fit">
+                  Paid
+                </span>
+              </div>
+              <div className="flex flex-col md:pl-[3.9rem]">
+                <p className="text-gray-800 font-semibold text-sm">
+                  IKEA table top
+                </p>
+                <p className="text-gray-300 text-sm">Office equipment</p>
+              </div>
+              <p className="md:pl-[4.4rem] text-sm capitalize hidden md:inline-block">
+                {letter.kategoriSurat}
+              </p>
+              <div className="flex flex-col items-end">
+                <Link
+                  href={`/letter/${letter._id}`}
+                  className="text-orange-400 font-medium"
+                >
+                  View archive
+                </Link>
+                <p className="text-gray-400 text-sm">#{letter.noSurat}</p>
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );

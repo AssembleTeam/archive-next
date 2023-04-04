@@ -25,7 +25,7 @@ export default async function handler(req, res) {
       const letter = await Letter.create(req.body);
       res.status(201).json(letter);
     } catch (error) {
-      res.status(500).json(error.message);
+      res.status(500).json(error);
     }
   }
 }

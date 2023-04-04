@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
   if (method === 'GET') {
     try {
-      const letter = await Letter.findById(id);
+      const letter = await Letter.findById(id).populate('kepada');
       res.status(200).json(letter);
     } catch (error) {
       res.status(500).json(error.message);

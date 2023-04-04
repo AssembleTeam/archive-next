@@ -8,7 +8,19 @@ const letterSchema = new mongoose.Schema(
     asalSurat: { type: String, required: true },
     tglDiterima: { type: Date, required: true },
     photoSurat: { type: String },
-    kepada: { type: mongoose.Types.ObjectId, ref: 'User' },
+    kepada: { type: mongoose.SchemaTypes.ObjectId, ref: 'User' },
+    tracker: [
+      {
+        currentPlace: String,
+        status: { type: String, default: 'pending' },
+        time: {
+          type: Date,
+          default: () => {
+            Date.now();
+          },
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

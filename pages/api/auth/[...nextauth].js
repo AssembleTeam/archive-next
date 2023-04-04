@@ -25,7 +25,7 @@ export default NextAuth({
         const user = await User.findOne({ email: credentials.email });
         if (user && argon2.verify(credentials.password, user.password)) {
           return {
-            name: user.firstName + ' ' + user.lastName,
+            name: [user.firstName, '', user.lastName].join(' '),
             email: user.email,
             image: user.photo,
           };
