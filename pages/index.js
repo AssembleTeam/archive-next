@@ -4,19 +4,11 @@ import Link from 'next/link';
 import Table from '../components/Table';
 import Layout from '../components/Layout';
 
-import { AiFillMail, AiOutlineUser } from 'react-icons/ai';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { AiFillMail } from 'react-icons/ai';
 
-export default function Home() {
+import Image from 'next/image';
+
+export default function Home({ users }) {
   return (
     <>
       <Head>
@@ -43,9 +35,9 @@ export default function Home() {
 
       <Table />
 
-      <div className="grid grid-cols-6 gap-5 my-16">
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-5 my-16">
         {/* mails senders */}
-        <div className="bg-white rounded-lg shadow py-4 px-8 col-span-2">
+        <div className="bg-white rounded-lg shadow py-4 px-8 md:col-span-2 col-span-full">
           <div className="flex items-center justify-between">
             <h1 className="text-gray-700 font-medium">Latest Mails</h1>
             <Link
@@ -57,26 +49,29 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-4 mt-5">
-            <div className="flex items-center gap-4">
-              <AiOutlineUser className="w-7 h-7" />
-              <div className="flex flex-col">
-                <span className="text-base">Dini abshari</span>
-                <span className="text-sm text-gray-500">204833494812</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <AiOutlineUser className="w-7 h-7" />
-              <div className="flex flex-col">
-                <span className="text-base">Much Darmawan</span>
-                <span className="text-sm text-gray-500">204833494812</span>
-              </div>
-            </div>
+            {users &&
+              users.map((user) => (
+                <div className="flex items-center gap-4" key={user._id}>
+                  <Image
+                    alt="user_profile"
+                    src={user.photo}
+                    width={500}
+                    height={500}
+                    className="w-6 h-6 drop-shadow shadow rounded-full"
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium">
+                      {[user.firstName, '', user.lastName].join(' ')}
+                    </span>
+                    <span className="text-xs text-gray-400">204833494812</span>
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
 
         {/* charts */}
-        <div className="bg-white rounded-lg shadow py-4 px-8 col-span-4">
+        <div className="bg-white rounded-lg shadow py-4 px-8 md:col-span-4 col-span-full">
           <h1 className="text-gray-700 font-medium mb-8">Mails sent</h1>
         </div>
       </div>
@@ -87,3 +82,13 @@ export default function Home() {
 Home.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
+
+export async function getStaticProps() {
+  const data = await fetch('http://localhost:3000/api/user');
+
+  return {
+    props: {
+      users: await data.json(),
+    },
+  };
+}

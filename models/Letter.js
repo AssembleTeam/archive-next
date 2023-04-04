@@ -7,7 +7,7 @@ const letterSchema = new mongoose.Schema(
     perihalSurat: { type: String, required: true },
     asalSurat: { type: String, required: true },
     tglDiterima: { type: Date, required: true },
-    photoSurat: { type: String },
+    photoSurat: [String],
     kepada: { type: mongoose.SchemaTypes.ObjectId, ref: 'User' },
     tracker: [
       {
